@@ -1,0 +1,166 @@
+The project consists of multiple SQL queries focusing on different aspects of churn analysis:
+
+-- Overall Churn Rate
+This query calculates the overall churn rate by comparing the total number of customers with the number of churned customers.
+
+SELECT 
+    COUNT(*) AS Total_Customers,
+    SUM(Exited) AS Churned_Customers,
+    CONCAT(ROUND(SUM(Exited) * 100.0 / COUNT(*), 2), '%') AS Churn_Rate_Percentage
+FROM customer_data;
+
+
+
+-- Churn Rate by Country
+Calculating the churn rate for each country and ranking them in descending order of churn rate.
+
+SELECT 
+    Geography,
+    COUNT(*) AS Total_Customers,
+    SUM(Exited) AS Churned_Customers,
+    CONCAT((ROUND(SUM(Exited) * 100.0 / COUNT(*), 2)), '%') AS Churn_Rate_Percentage
+FROM customer_data
+GROUP BY Geography
+ORDER BY Churn_Rate_Percentage DESC;
+
+
+-- Churn Rate by Age Group
+Segmenting customers by age group and calculates churn rate for each group.
+
+SELECT 
+    CASE
+        WHEN Age < 30 THEN 'Young'
+        WHEN Age BETWEEN 30 AND 50 THEN 'Mid-age'
+        ELSE 'Senior'
+    END AS Age_Group,
+    COUNT(*) AS Total,
+    SUM(Exited) AS Churned,
+    ROUND(SUM(Exited) * 100.0 / COUNT(*), 2) AS Churn_Rate
+FROM customer_data
+GROUP BY CASE
+    WHEN Age < 30 THEN 'Young'
+    WHEN Age BETWEEN 30 AND 50 THEN 'Mid-age'
+    ELSE 'Senior'
+END
+ORDER BY churn_rate DESC;
+
+
+-- Churn by Balance and Salary
+Comparing average balance and salary for churned vs retained customers.
+
+SELECT 
+    CASE
+        WHEN exited = 1 THEN 'Churned_Customers'
+        ELSE 'Active_Customers'
+    END AS Customer_status,
+    ROUND(AVG(Balance), 2) AS Avg_Balance,
+    ROUND(AVG(EstimatedSalary), 2) AS Avg_Salary,
+    COUNT(*) AS Count_Customers
+FROM customer_data
+GROUP BY CASE
+    WHEN exited = 1 THEN 'Churned_Customers'
+    ELSE 'Active_Customers'
+END;
+
+
+-- Churn Rate by Tenure (Loyalty)
+Analysing how customer loyalty (tenure) impacts churn rate.
+
+SELECT 
+    Tenure,
+    COUNT(*) AS Total_Customers,
+    SUM(Exited) AS Churned,
+    ROUND(SUM(Exited) * 100.0 / COUNT(*), 2) AS Churn_Rate
+FROM customer_data
+GROUP BY Tenure
+ORDER BY Tenure ASC, Churn_Rate DESC;
+
+
+-- Churn Rate by Number of Products Used
+Showing how the number of products used affects churn rate.
+
+SELECT 
+    NumOfProducts,
+    COUNT(*) AS Total_Customers,
+    SUM(Exited) AS Churned,
+    ROUND(SUM(Exited) * 100.0 / COUNT(*), 2) AS Churn_Rate
+FROM customer_data
+GROUP BY NumOfProducts
+ORDER BY Churn_Rate DESC;
+
+
+-- Impact of Credit Card Ownership on Churn
+Analysing churn rate based on credit card ownership.
+
+SELECT 
+    HasCrCard,
+    COUNT(*) AS Total_Customers,
+    SUM(Exited) AS Churned,
+    ROUND(SUM(Exited) * 100.0 / COUNT(*), 2) AS Churn_Rate
+FROM customer_data
+GROUP BY HasCrCard;
+
+
+-- Churn Rate by Active Member Status
+
+Comparing churn between active and inactive customers.
+SELECT 
+    IsActiveMember,
+    COUNT(*) AS Total_Customers,
+    SUM(Exited) AS Churned,
+    ROUND(SUM(Exited) * 100.0 / COUNT(*), 2) AS Churn_Rate
+FROM customer_data
+GROUP BY IsActiveMember;
+
+
+-- Customer Risk Segmentation View
+Created a view based on credit score, age, balance, and activity to classify customers into risk categories.
+
+CREATE VIEW customer_risk_segments AS
+    SELECT 
+        CustomerID,
+        Surname,
+        CreditScore,
+        Geography,
+        Gender,
+        Age,
+        Tenure,
+        Balance,
+        NumOfProducts,
+        HasCrCard,
+        IsActiveMember,
+        EstimatedSalary,
+        Exited,
+        CASE
+            WHEN CreditScore < 600 THEN 'Low'
+            WHEN CreditScore BETWEEN 600 AND 750 THEN 'Medium'
+            ELSE 'High'
+        END AS CreditScore_Group,
+        CASE
+            WHEN Age < 30 THEN 'Young'
+            WHEN Age BETWEEN 30 AND 50 THEN 'Mid'
+            ELSE 'Senior'
+        END AS Age_Group,
+        CASE
+            WHEN Balance > 100000 THEN 'High_Value'
+            ELSE 'Regular'
+        END AS Customer_Value,
+        CASE
+            WHEN IsActiveMember = 0 AND CreditScore < 600 AND Age > 50 THEN 'High Risk'
+            WHEN IsActiveMember = 0 AND CreditScore < 600 THEN 'Medium Risk'
+            ELSE 'Low Risk'
+        END AS Churn_Risk_Level
+    FROM customer_data;
+
+
+-- Top 10 High-Risk Customers Who Already Churned
+Identified top 10 high-risk churned customers by balance.
+
+SELECT 
+    *
+FROM customer_risk_segments
+WHERE Churn_Risk_Level = 'High Risk'
+    AND Exited = 1
+ORDER BY Balance DESC
+LIMIT 10;
+
