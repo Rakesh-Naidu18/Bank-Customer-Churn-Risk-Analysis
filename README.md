@@ -1,45 +1,49 @@
-# Bank Customer Churn Analysis - Risk Profiling & Recommendation System
+# 🧩 Business Problem  
+Banks and financial institutions often face the challenge of **customer churn**—when customers leave the service. Retaining existing customers is significantly more cost-effective than acquiring new ones. Hence, identifying the factors leading to churn is critical for improving customer loyalty and profitability.
 
-## Project Overview
+---
 
-This project uses a bank customer dataset to analyze customer churn and build a **Risk Profiling** and **Recommendation System**. The goal is to identify customers at risk of leaving the bank and suggest personalized retention strategies based on their financial behavior, activity status, and credit score.
+## 🎯 Objective  
+- Understand the factors influencing customer churn  
+- Segment customers based on risk to enable proactive retention strategies  
+- Identify patterns and profiles of customers who are most likely to leave  
+- Help the business take data-driven decisions to improve customer retention
 
-## Problem Statement
+---
 
-Customer churn is a critical issue in the banking industry. By analyzing customer data, we can identify factors leading to churn and develop strategies to retain high-risk customers.
+## 🔍 What I Did  
+- Performed **exploratory data analysis** on a customer dataset  
+- Calculated **overall churn rate** and analyzed churn by different demographics and behavior patterns  
+- Created **risk segments** (low, medium, high) based on business logic  
+- Focused on **actionable insights** to help reduce churn
 
-## Objectives
-- **Churn Analysis**: Identify factors contributing to churn.
-- **Customer Segmentation**: Create risk profiles to categorize customers as high, medium, and low risk.
-- **Personalized Recommendations**: Generate recommendations to reduce churn based on the risk profiles.
+---
 
-## Tools and Technologies
-- **SQL**: Used for data extraction, transformation, and analysis.
-- **Power BI**: Used to visualize customer churn, segmentation, and risk profiles.
-- **GitHub**: Project and code repository.
+## 📈 Analysis Performed  
+- **Overall Churn Rate**: Found the percentage of customers who exited  
+- **Churn by Geography**: Identified regions with higher churn risk  
+- **Churn by Age Group**: Analyzed churn tendency among young, middle-aged, and senior customers  
+- **Balance & Salary Comparison**: Compared financial metrics between churned and retained customers  
+- **Tenure vs Churn**: Checked if loyalty (tenure) affects churn  
+- **Product Usage vs Churn**: Assessed how number of products influences churn  
+- **Credit Card Ownership & Activity Level**: Examined behavioral factors linked to churn  
+- **Risk Segmentation**: Built customer profiles based on age, activity, credit score, and balance
 
-## Steps Performed
+---
 
-1. **Data Cleaning and Preparation**
-   - Removed duplicates, handled missing values, and ensured data integrity.
-   
-2. **Exploratory Data Analysis (EDA)**
-   - Calculated summary statistics and analyzed churn distribution across age, geography, and credit score.
+## 🛠️ Tools Used  
+- **SQL (MySQL)** – for data analysis and segmentation  
+- **DBMS** – to run queries and create views for risk profiling  
 
-3. **Feature Engineering**
-   - Created new features like customer tenure, activity status, and credit score grouping.
+---
 
-4. **Risk Profiling**
-   - Categorized customers into high, medium, and low-risk groups based on their financial data and activity.
+## 🔍 Key Insights  
+- **Senior customers**, those with **low credit scores**, and **inactivity** show higher churn  
+- Customers with **high balances** are valuable but may still churn if not engaged  
+- **Inactive members**, especially older ones with poor credit, are at highest risk  
+- **Geography** plays a role in churn, possibly due to regional service issues or competition
 
-5. **Recommendation System**
-   - Based on the risk profiles, generated tailored recommendations to improve customer retention.
+---
 
-## Current Progress
-- Data cleaning and exploration are completed.
-- Customer segmentation and risk profiling have been implemented.
-- Recommendations based on risk levels are ready.
-
-## Next Steps
-- Enhance visualizations in Power BI.
-- Further refine the risk profiling model
+## ✅ Outcome  
+This project highlights **churn patterns** and builds a foundation for **customer retention strategies**. The insights can help target **high-risk profiles** with personalized interventions like better engagement, loyalty rewards, or financial counseling.
